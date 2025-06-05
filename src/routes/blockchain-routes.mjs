@@ -4,6 +4,6 @@ import { addBlock, findBlock, listAllBlocks } from '../controllers/blockchain-co
 const blockchainRouter = new Router();
 
 blockchainRouter.route('/').get(listAllBlocks).post(addBlock);
-blockchainRouter.route('/:id').get(findBlock);
+blockchainRouter.route('/:key').get(findBlock);
 
 export default blockchainRouter;

@@ -13,10 +13,18 @@ export default class Storage {
     this.#filePath = path.join(__dirname, folder, filename);
   }
 
+  async fileExists() {
+    try {
+      await fs.access(this.#filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   async readFromFile() {
     try {
-      const content = await fs.readFile(this.#filePath, 'utf-8');
-      return JSON.parse(content);
+      return await fs.readFile(this.#filePath, 'utf-8');
     } catch (error) {
       throw new AppError(error, 500);
     }
