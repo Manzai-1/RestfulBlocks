@@ -1,4 +1,4 @@
-import { GENESIS, MINE_RATE } from '../utillities/config.mjs';
+import { GENESIS, MINE_RATE } from '../config.mjs';
 import { getHash } from '../utillities/hash.mjs';
 
 export default class Block {

@@ -1,5 +1,6 @@
 import AppError from '../models/AppError.mjs';
 import Block from '../models/Block.mjs';
+import Blockchain from '../models/Blockchain.mjs';
 import Storage from '../models/Storage.mjs';
 
 export default class BlockchainRepository {
@@ -7,34 +8,30 @@ export default class BlockchainRepository {
 
 	constructor() {
 		this.#storage = new Storage('data', 'blockchain.json');
-		this.#storage.fileExists().then((exists) => {
-			if (exists) return;
-            this.#storage.writeToFile(
-                JSON.stringify( [Block.genesis()] )
-            ).then(() => { return });
-		});
+		this.#storage.initializeFile(
+			JSON.stringify( [Block.genesis()] )
+		).then(()=>{ return });
 	}
 
-	async listAll() {
-        const blockchain = await this.#storage.readFromFile();
-        return JSON.parse(blockchain);
+	async getBlockchain() {
+        const chain = JSON.parse(await this.#storage.readFromFile());
+		const passed_validation = Blockchain.validateChain(chain);
+		return { passed_validation, chain };
 	}
 
 	async add(data) {
-        if(!data) throw new AppError(`No data was provided`, 400);
+        if(Object.keys(data).length === 0) throw new AppError(`No data was provided`, 400);
+		
+		const chain = await JSON.parse(await this.#storage.readFromFile());
+		const updatedChain = Blockchain.addBlock({ chain, data });
+		await this.#storage.writeToFile(JSON.stringify(updatedChain));
 
-        const blockchain = await JSON.parse(await this.#storage.readFromFile());
-        const newBlock = Block.createBlock({ previousBlock: blockchain.at(-1), data });
-        blockchain.push(newBlock);
-        await this.#storage.writeToFile(JSON.stringify(blockchain));
-
-        return newBlock;
+		return updatedChain.at(-1);
     }
 
 	async find(hash) {
-		const blockchain = JSON.parse(await this.#storage.readFromFile());
-		const block = blockchain.find(b => b.hash === hash);
-
+		const chain = JSON.parse(await this.#storage.readFromFile());
+		const block = Blockchain.findBlockByHash({ chain, hash });
 		if (!block) throw new AppError(`Could not locate block with hash: ${hash}`, 404);
 
 		return block;

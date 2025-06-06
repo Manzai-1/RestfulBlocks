@@ -1,4 +1,1 @@
-Method: GET Url: /api/v1/blockchain2/ Date: 2025-06-06 Time: 08:40:07 Success: undefined - Message: AppError is not defined
-Method: GET Url: /api/v1/blockchain2/ Date: 2025-06-06 Time: 08:44:40 Success: undefined - Message: AppError is not defined
-Method: GET Url: /api/v1/blockchain2/ Date: 2025-06-06 Time: 08:46:21 Success: undefined - Message: Resource not found, /api/v1/blockchain2/
-Method: GET Url: /api/v1/blockchain2/ Date: 2025-06-06 Time: 08:46:37 Success: undefined - Message: Resource not found, /api/v1/blockchain2/
+Method: GET Url: /api/v1/blockchains/ Date: 2025-06-06 Time: 13:11:03 Success: false - Message: Resource not found, /api/v1/blockchains/

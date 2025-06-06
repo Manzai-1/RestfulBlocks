@@ -1,13 +1,29 @@
 import fs from 'fs/promises';
 import path from 'path';
 import AppError from './AppError.mjs';
-import { APP_DIR } from '../appDir.mjs';
+import { APP_DIR } from '../config.mjs';
 
 export default class Storage {
 	#filePath = undefined;
 
 	constructor(folder, filename) {
-		this.#filePath = path.join(APP_DIR, folder, filename);
+		this.initializeFolder(path.join(APP_DIR, folder)).then(
+			this.#filePath = path.join(APP_DIR, folder, filename)
+		);
+	}
+
+	async initializeFolder(folderPath) {
+		try {
+			await fs.access(folderPath);
+		} catch (error) {
+			await fs.mkdir(folderPath);
+		}
+	}
+
+	async initializeFile(data) {
+		if(! await this.fileExists()) {
+			await this.writeToFile(data);
+		}
 	}
 
 	async fileExists() {
