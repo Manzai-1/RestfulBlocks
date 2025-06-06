@@ -12,6 +12,6 @@ export const addBlock = catchErrorAsync(async (req, res) => {
 });
 
 export const findBlock = catchErrorAsync(async (req, res) => {
-    const block = await new BlockchainRepository().find(req.params.key);
+    const block = await new BlockchainRepository().find(req.params.hash);
 	res.status(200).json({ success: true, data: block });
 });

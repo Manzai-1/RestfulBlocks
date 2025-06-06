@@ -31,11 +31,11 @@ export default class BlockchainRepository {
         return newBlock;
     }
 
-	async find(key) {
+	async find(hash) {
 		const blockchain = JSON.parse(await this.#storage.readFromFile());
-		const block = blockchain.find(b => Object.values(b).includes(key));
+		const block = blockchain.find(b => b.hash === hash);
 
-		if (!block) throw new AppError(`Could not find any block that contains the keyword: ${key}`, 404);
+		if (!block) throw new AppError(`Could not locate block with hash: ${hash}`, 404);
 
 		return block;
 	}
