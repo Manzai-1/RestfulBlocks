@@ -2,12 +2,12 @@ import { expect, it } from 'vitest';
 import { getHash } from './hash.mjs';
 
 describe('hash functions', () => {
-    const text_1 = 'test';
-    const text_2 = 'Test';
-    const testHash = '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
+    const text_1 = {test: 'test'};
+    const text_2 = {test: 'Test'};
+    const text_1_hash = '3e80b3778b3b03766e7be993131c0af2ad05630c5d96fb7fa132d05b77336e04';
 
     it('should generate a correct SHA-256 hash', () => {
-        expect(getHash(text_1)).toEqual(testHash);
+        expect(getHash(text_1)).toEqual(text_1_hash);
     })
 
     it('should generate a different hash when any change has been made to the input', () => {
