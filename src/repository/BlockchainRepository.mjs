@@ -32,7 +32,7 @@ export default class BlockchainRepository {
 	async find(hash) {
 		const chain = JSON.parse(await this.#storage.readFromFile());
 		const block = Blockchain.findBlockByHash({ chain, hash });
-		if (!block) throw new AppError(`Could not locate block with hash: ${hash}`, 404);
+		if (!block) throw new AppError(`No block exists with hash: ${hash}`, 404);
 
 		return block;
 	}

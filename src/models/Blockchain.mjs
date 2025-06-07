@@ -1,6 +1,5 @@
 import { getHash } from '../utillities/hash.mjs';
 import Block from './Block.mjs';
-import Storage from './Storage.mjs';
 
 export default class Blockchain {
 	static addBlock({ chain, data }) {
@@ -17,23 +16,16 @@ export default class Blockchain {
 	}
 
 	static validateChain(chain) {
-		if (JSON.stringify(chain.at(0)) !== JSON.stringify(Block.genesis())) {
-			return false;
-		}
+		if (JSON.stringify(chain.at(0)) !== JSON.stringify(Block.genesis())) return false;
 
 		for (let i = 1; i < chain.length; i++) {
-			const { timestamp, previousHash, data, hash, nonce, difficulty } =
-				chain.at(i);
+			const { timestamp, previousHash, data, hash, nonce, difficulty } = chain.at(i);
 			const previousBlockHash = chain[i - 1].hash;
 
-			if (previousBlockHash !== previousHash) {
-				return false;
-			}
+			if (previousBlockHash !== previousHash) return false;
 
 			const validHash = getHash({ timestamp, previousHash, data, nonce, difficulty });
-			if (hash !== validHash) {
-				return false;
-			}
+			if (hash !== validHash) return false;
 		}
 
 		return true;
